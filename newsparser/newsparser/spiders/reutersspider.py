@@ -7,6 +7,4 @@ class ReutersspiderSpider(scrapy.Spider):
     start_urls = ["https://www.reuters.com/"]
 
     def parse(self, response):
-        print(dir(response))
-        
-        yield(response.url)
+        yield(response.css("."))
