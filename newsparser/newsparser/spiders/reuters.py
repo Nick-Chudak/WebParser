@@ -38,7 +38,7 @@ class ReutersspiderSpider(scrapy.Spider):
         # f.close()
         # self.log(f"Saved file results.html")
         # print("----------------")
-        Path("reuters.html").write_bytes(response.body)
+        Path('reuters.html').write_bytes(response.body)
         # titles = response.css("h3").getall()
 
         titles = [title for title in response.css(self.selectors["titles"]).getall()]
@@ -56,7 +56,7 @@ class ReutersspiderSpider(scrapy.Spider):
             }
             articles.append(article)
         self.log(articles)
-        
+
         with open("outfile", "w") as outfile:
             outfile.write("\n".join(articles))
             
