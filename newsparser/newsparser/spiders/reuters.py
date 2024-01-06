@@ -15,7 +15,7 @@ def get_proxy_url(url):
 class ReutersspiderSpider(scrapy.Spider):
     name = "reuters"
     #allowed_domains = ["reuters.com"]
-    with open("newsparser/config/selectors.json") as selector_file:
+    with open("newsparser/config/selectors_reuters.json") as selector_file:
         selectors = json.load(selector_file)
     
     def __init__(self, search_extension = "", **kwargs):
