@@ -1,15 +1,15 @@
 import scrapy
 import json
 import os
-
+from pathlib import Path
 
 def create_reuters_search_url(query):
-   return f"https://www.reuters.com/site-search/?query={query.replace(' ', '+')}"
+   return f"https://www.bbc.com/search?q={query.replace(' ', '+')}"
 
 def create_scrapeops_url(url, js=False, wait=False):
     #key = os.getenv("3d9a1a8d-90dc-400f-8b40-b725eb54cab9")
     key = "3d9a1a8d-90dc-400f-8b40-b725eb54cab9"
-    scraping_url = f"https://proxy.scrapeops.io/v1/?api_key={key}&url={url}"
+    scraping_url = f"{url}"
     if js:
         scraping_url += "&render_js=true"
     if wait:
@@ -39,19 +39,20 @@ class ReutersSpider(scrapy.Spider):
     """
     name = 'reutersSpider'
     
-    http_user = "user"
-    http_pass = "userpass"
+    # http_user = "nchudak"
+    # http_pass = "20040522"
     with open("newsparser/config/selectors_reuters.json") as selector_file:
         selectors = json.load(selector_file)
     
     def start_requests(self):
         start_urls = [
-            create_scrapeops_url(create_reuters_search_url("ukraine war"), wait=False)
+            create_scrapeops_url(create_reuters_search_url("apple"), wait=False)
         ]
         for url in start_urls:
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response, **kwargs):
+        Path("output.html").write_bytes(response.body)
         self.log(response.body)
         titles = [title for title in response.css(self.selectors["titles"]).getall()]
         urls = ["https://www.reuters.com" + url for url in response.css(self.selectors["urls"]).getall()]
